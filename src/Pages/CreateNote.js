@@ -12,7 +12,7 @@ const CreateNote = () => {
     };
   };
   return (
-    <div className="w-screen h-screen flex flex-col md:flex-row justify-between bg-gray-100 p-4 md:p-8">
+    <div className="w-screen h-screen flex flex-col md:flex-row justify-between bg-white p-4 md:p-8">
       {/* Left Section */}
       <div className="w-full md:w-1/2 bg-white rounded-xl p-6 md:p-8 shadow-lg mb-4 md:mb-0">
         <h1 className="text-3xl md:text-4xl font-bold border-l-4 border-blue-500 p-1 text-gray-700 mb-8">
@@ -38,7 +38,7 @@ const CreateNote = () => {
             className="bg-green-500 hover:bg-green-600 text-white font-medium text-md rounded-lg p-2 px-4 transition duration-300"
             onClick={toggleRecordOption("speechToText")}
           >
-            Speech To Text
+            Text
           </button>
         </div>
 

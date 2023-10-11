@@ -9,17 +9,9 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { CgNotes } from "react-icons/cg";
 import { MdFavoriteBorder } from "react-icons/md";
 import { BiLogOut } from "react-icons/bi";
+import { useLocation } from "react-router-dom";
 
-import {
-  GoHome,
-  GoPlay,
-  GoStack,
-  GoVideo,
-  GoHistory,
-  GoFileMedia,
-  GoRocket,
-} from "react-icons/go";
-import Logo from "../Assets/logo1.png";
+import Logo from "../Assets/logonew.png";
 const SideBar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -54,34 +46,55 @@ const SideBar = () => {
     // Unsiubscribe when component unmounts
     return () => unsubscribe();
   }, []);
+  const location = useLocation();
+  const isCurrentPath = (path) => location.pathname === path;
+
+  const getNavItemClass = (path) => {
+    if (isCurrentPath(path)) {
+      return "text-blue-400 bg-white rounded-lg";
+    }
+    return "text-black hover:text-blue-400 hover:bg-white";
+  };
   return (
     <div className="bg-gray-200 h-[100vh] p-2 shadow-lg w-15 z-10 align-baseline flex flex-col justify-between">
       <div className="flex justify-center">
-        <img className="w-10 h-15 rounded-lg" src={Logo} alt="logo" />
+        <img className="w-15 h-16 rounded-lg" src={Logo} alt="logo" />
       </div>
 
       <div>
         <nav className="mt-6">
           <ul>
-            <li className="mb-2 p-3 hover:bg-white hover:rounded-lg flex justify-center">
-              <Link to="/home/note" className="text-black hover:text-blue-400">
+            <li
+              className={`mb-2 p-3 ${
+                isCurrentPath("/home/note") ? "bg-white rounded-lg" : ""
+              } flex justify-center`}
+            >
+              <Link to="/home/note" className={getNavItemClass("/home/note")}>
                 <AiOutlinePlus className="text-3xl text-blue" />
               </Link>
             </li>
-            <li className="mb-2 p-3 hover:bg-white hover:rounded-lg flex justify-center">
+            <li
+              className={`mb-2 p-3 ${
+                isCurrentPath("/home/mynotes") ? "bg-white rounded-lg" : ""
+              } flex justify-center`}
+            >
               <Link
                 to="/home/mynotes"
-                className="text-grey hover:text-blue-400"
+                className={getNavItemClass("/home/mynotes")}
               >
                 <CgNotes className="text-3xl text-blue" />
               </Link>
             </li>
-            <li className="mb-2 p-3 hover:bg-white hover:rounded-lg flex justify-center">
+            <li
+              className={`mb-2 p-3 ${
+                isCurrentPath("/home/favourites") ? "bg-white rounded-lg" : ""
+              } flex justify-center`}
+            >
               <Link
                 to="/home/favourites"
-                className="text-black hover:text-blue-400"
+                className={getNavItemClass("/home/favourites")}
               >
-                <MdFavoriteBorder className="text-blue text-3xl" />
+                <MdFavoriteBorder className="text-3xl text-blue" />
               </Link>
             </li>
             {/* Add more navigation items as needed */}

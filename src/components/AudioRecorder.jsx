@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { PiMicrophoneBold } from "react-icons/pi";
 const mimeType = "audio/webm";
 
@@ -14,6 +14,26 @@ const AudioRecorder = () => {
 	const [audio, setAudio] = useState(null);
 
 	const [audioChunks, setAudioChunks] = useState([]);
+	const [duration, setDuration] = useState(0); // Add this state to keep track of duration
+
+	const formatDuration = (seconds) => {
+		const minutes = Math.floor(seconds / 60);
+		const remainingSeconds = seconds % 60;
+		return `${minutes}:${String(remainingSeconds).padStart(2, '0')}`;
+	};
+	
+	useEffect(() => {
+		let timer;
+		if (recordingStatus === "recording") {
+			timer = setInterval(() => {
+				setDuration(prevDuration => prevDuration + 1);
+			}, 1000);
+		} else {
+			clearInterval(timer);
+			setDuration(0); // Reset the duration when recording stops or is inactive
+		}
+		return () => clearInterval(timer); // Clear interval when component unmounts
+	}, [recordingStatus]);
 
 	const getMicrophonePermission = async () => {
 		if ("MediaRecorder" in window) {
@@ -64,39 +84,22 @@ const AudioRecorder = () => {
 			setAudioChunks([]);
 		};
 	};
+	useEffect(()=>{
+		getMicrophonePermission();
+	},[]);
 
 	return (
 		<div className="flex flex-col items-center">
 			{/* <h2 className="text-xl">Audio Recorder</h2> */}
 			<main>
 	<div className="mb-5">
-		{!permission ? (
-			<button onClick={getMicrophonePermission} type="button" className="...">
-				Get Microphone
-			</button>
-		) : null}
+		
 		{permission && recordingStatus === "inactive" ? (
 			<div className="flex justify-end">
 
 			<button onClick={startRecording} type="button" className="
-			bg-blue-500 
-			hover:bg-blue-600 
-			active:bg-blue-700 
-			text-white 
-			font-semibold 
-			text-sm 
-			px-4 py-2 
-			border 
-			border-blue-500 
-			rounded-md 
-			transition 
-			duration-300 
-			ease-in-out 
-			focus:outline-none 
-			focus:ring-2 
-			focus:ring-blue-400 
-			focus:ring-opacity-50
-		">
+			bg-blue-500 hover:bg-blue-600 active:bg-blue-700 
+			text-white font-semibold text-sm px-4 py-2 border border-blue-500 rounded-md">
 				Start 
 			</button>
 			</div>
@@ -104,33 +107,24 @@ const AudioRecorder = () => {
 		) : null}
 		{recordingStatus === "recording" ? (
 			<div>
-			<div className="flex justify-end ">
-		  <button 
-    onClick={stopRecording} 
-    type="button" 
-    className="
-        bg-blue-500 
-        hover:bg-blue-600 
-        active:bg-blue-700 
-        text-white 
-        font-semibold 
-        text-sm 
-        px-4 py-2 
-        border 
-        border-blue-500 
-        rounded-md 
-        transition 
-        duration-300 
-        ease-in-out 
-        focus:outline-none 
-        focus:ring-2 
-        focus:ring-blue-400 
-        focus:ring-opacity-50
-    ">
-    Stop 
-</button>
-</div>
-<div className="flex items-center justify-center">
+			<div className="flex justify-between mb-10">
+			<p className="text-md text-red-500">{formatDuration(duration)}</p>
+			  <button 
+				onClick={stopRecording} 
+				type="button" 
+				className="
+					bg-blue-500 
+					hover:bg-blue-600 
+					active:bg-blue-700 
+					text-white 
+					font-semibold 
+					text-sm 
+					px-4 py-2 
+					border 
+					border-blue-500 
+					rounded-md ">Stop 	</button>
+		</div>
+		<div className="flex items-center justify-center">
 			<button
 			  id="speech"
 			  className="relative flex items-center justify-center w-24 h-24 text-white text-4xl rounded-full bg-red z-10"
@@ -144,12 +138,13 @@ const AudioRecorder = () => {
 		) : null}
 	</div>
 	{audio ? (
-		<div className="flex flex-col items-center">
-			<audio src={audio} controls></audio>
-			<a download href={audio} className="...">
-				Download Recording
+		<div className="mt-6 flex flex-col items-center">
+			<audio className="mb-4" src={audio} controls></audio>
+			<a className="rounded-md border-2 bg-blue-500 hover:bg-blue-600 text-white text-md px-4 py-2 m-4" download href={audio} >
+				Download 
 			</a>
 		</div>
+		
 	) : null}
 </main>
 
