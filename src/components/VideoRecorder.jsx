@@ -93,31 +93,60 @@ const VideoRecorder = () => {
 	};
 
 	return (
-		<div className="flex flex-col items-center">
-			<h2 className="text-xl">Video Recorder</h2>
-			<main>
+		<div>
+			{/* <h2 className="text-xl">Video Recorder</h2> */}
+			
 				<div className="mb-5">
 					{!permission ? (
-						<button onClick={getCameraPermission} type="button">
+						<button onClick={getCameraPermission} type="button" className="
+						bg-blue-500 hover:bg-blue-600 active:bg-blue-700 
+						text-white font-semibold text-sm px-4 py-2 border 
+						border-blue-500 rounded-md 
+						transition duration-300 ease-in-out focus:outline-none 
+						focus:ring-2 focus:ring-blue-400 
+						focus:ring-opacity-50" >
 							Get Camera
 						</button>
 					) : null}
 					{permission && recordingStatus === "inactive" ? (
-						<button onClick={startRecording} type="button">
-							Start Recording
+						<div className="flex justify-end mb-10">
+						<button onClick={startRecording} type="button" className="
+						bg-blue-500 hover:bg-blue-600 active:bg-blue-700 
+						text-white font-semibold text-sm px-4 py-2 border 
+						border-blue-500 rounded-md 
+						transition duration-300 ease-in-out focus:outline-none 
+						focus:ring-2 focus:ring-blue-400 
+						focus:ring-opacity-50">
+							Start 
 						</button>
+						</div>
 					) : null}
 					{recordingStatus === "recording" ? (
-						<button onClick={stopRecording} type="button">
-							Stop Recording
+						<div className="flex justify-end mb-10">
+							<button onClick={stopRecording} type="button" className="
+						bg-blue-500 hover:bg-blue-600 active:bg-blue-700 
+						text-white font-semibold text-sm px-4 py-2 border 
+						border-blue-500 rounded-md 
+						transition duration-300 ease-in-out focus:outline-none 
+						focus:ring-2 focus:ring-blue-400 
+						focus:ring-opacity-50
+					">
+							Stop 
 						</button>
+						</div>
+						
 					) : null}
 				</div>
-			</main>
+		
 
-			<div className="flex flex-col items-center">
+			<div >
 				{!recordedVideo ? (
-					<video ref={liveVideoFeed} autoPlay className="live-player"></video>
+					<div className="aspect-w-9 aspect-h-16">
+					<video ref={liveVideoFeed} autoPlay className="live-player aspect-content object-cover"></video>
+				</div>
+				
+				
+				
 				) : null}
 				{recordedVideo ? (
 					<div>

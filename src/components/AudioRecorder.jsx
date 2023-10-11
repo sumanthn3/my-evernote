@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-
+import { PiMicrophoneBold } from "react-icons/pi";
 const mimeType = "audio/webm";
 
 const AudioRecorder = () => {
@@ -67,7 +67,7 @@ const AudioRecorder = () => {
 
 	return (
 		<div className="flex flex-col items-center">
-			<h2 className="text-xl">Audio Recorder</h2>
+			{/* <h2 className="text-xl">Audio Recorder</h2> */}
 			<main>
 	<div className="mb-5">
 		{!permission ? (
@@ -76,14 +76,71 @@ const AudioRecorder = () => {
 			</button>
 		) : null}
 		{permission && recordingStatus === "inactive" ? (
-			<button onClick={startRecording} type="button" className="...">
-				Start Recording
+			<div className="flex justify-end">
+
+			<button onClick={startRecording} type="button" className="
+			bg-blue-500 
+			hover:bg-blue-600 
+			active:bg-blue-700 
+			text-white 
+			font-semibold 
+			text-sm 
+			px-4 py-2 
+			border 
+			border-blue-500 
+			rounded-md 
+			transition 
+			duration-300 
+			ease-in-out 
+			focus:outline-none 
+			focus:ring-2 
+			focus:ring-blue-400 
+			focus:ring-opacity-50
+		">
+				Start 
 			</button>
+			</div>
+			
 		) : null}
 		{recordingStatus === "recording" ? (
-			<button onClick={stopRecording} type="button" className="...">
-				Stop Recording
+			<div>
+			<div className="flex justify-end ">
+		  <button 
+    onClick={stopRecording} 
+    type="button" 
+    className="
+        bg-blue-500 
+        hover:bg-blue-600 
+        active:bg-blue-700 
+        text-white 
+        font-semibold 
+        text-sm 
+        px-4 py-2 
+        border 
+        border-blue-500 
+        rounded-md 
+        transition 
+        duration-300 
+        ease-in-out 
+        focus:outline-none 
+        focus:ring-2 
+        focus:ring-blue-400 
+        focus:ring-opacity-50
+    ">
+    Stop 
+</button>
+</div>
+<div className="flex items-center justify-center">
+			<button
+			  id="speech"
+			  className="relative flex items-center justify-center w-24 h-24 text-white text-4xl rounded-full bg-red z-10"
+			>
+			  <div className="absolute w-full h-full bg-primary border-5 border-primary rounded-full animate-pulsate"></div>
+			  <PiMicrophoneBold className="text-white text-3xl z-20" />
 			</button>
+		  </div>
+
+			</div>
 		) : null}
 	</div>
 	{audio ? (

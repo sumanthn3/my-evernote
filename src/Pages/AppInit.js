@@ -4,6 +4,7 @@ import { RouterProvider } from "react-router-dom";
 import CreateNote from "./CreateNote";
 import HomePage from "./HomePage";
 import Login from "./Login";
+import MyNotes from "./MyNotes";
 const AppInit = () => {
   const appRouter = createBrowserRouter([
     {
@@ -11,12 +12,20 @@ const AppInit = () => {
       element: <Login />,
     },
     {
-      path: "/Home",
+      path: "/home",
       element: <HomePage />,
       children: [
         {
-          path: "Note",
+          path: "note",
           element: <CreateNote />,
+        },
+        {
+          path: "mynotes",
+          element: <MyNotes />,
+        },
+        {
+          path: "favourites",
+          element: <MyNotes />,
         },
       ],
     },
