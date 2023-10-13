@@ -1,6 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { PiMicrophoneBold } from "react-icons/pi";
-import TextareaAutosize from "react-textarea-autosize";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import { useDispatch } from "react-redux";
+import { addNote } from "../utils/notesSlice";
+import { Navigate, useNavigate } from "react-router-dom";
 const SpeechRecognition =
   window.SpeechRecognition || window.webkitSpeechRecognition;
 
@@ -9,8 +13,27 @@ mic.continuous = true; // <-- make sure it's 'continuous'
 mic.interimResults = true;
 
 const SpeechToText = () => {
+  const navigate = useNavigate();
+  const title = useRef(null);
+  const onSaveNote = () => {
+    console.log("Form values", title);
+    dispatch(
+      addNote({
+        id: Date.now(),
+        type: "text",
+        title: title.current.value,
+        note: note,
+      })
+    );
+    navigate("/Home/mynotes");
+  };
   const [isListening, setIsListening] = useState(false);
   const [note, setNote] = useState("");
+  const dispatch = useDispatch();
+
+  const handleChange = (value) => {
+    setNote(value);
+  };
 
   useEffect(() => {
     handleListen();
@@ -40,6 +63,7 @@ const SpeechToText = () => {
       console.log("STOPped mic on click");
     }
   };
+
   return (
     <div>
       <div className="flex justify-end my-2">
@@ -53,14 +77,7 @@ const SpeechToText = () => {
           px-4 py-2 
           border 
           border-blue-500 
-          rounded-md 
-          transition 
-          duration-300 
-          ease-in-out 
-          focus:outline-none 
-          focus:ring-2 
-          focus:ring-blue-400 
-          focus:ring-opacity-50"
+          rounded-md "
           onClick={() => {
             setIsListening((prevState) => !prevState);
           }}
@@ -71,10 +88,6 @@ const SpeechToText = () => {
       <div>
         <h2>
           {isListening && (
-            // <div className="relative p-5">
-            //   <div className="w-10 h-10 bg-blue-500 border-5 border-blue rounded-full absolute -top-5 -left-5 animate-pulsate"></div>
-            //   <PiMicrophoneBold className="text-white text-xl" />
-            // </div>
             <div className="flex items-center mb-10 justify-center">
               <button
                 id="speech"
@@ -87,13 +100,26 @@ const SpeechToText = () => {
           )}
         </h2>
       </div>
-
+      <input
+        ref={title}
+        type="text"
+        placeholder="Enter Title"
+        className="p-4 my-4 w-full bg-white rounded-lg"
+      />
       <div className="flex items-center my-2">
-        <TextareaAutosize
+        <ReactQuill
+          className="w-full bg-white rounded-lg"
           value={note}
-          className="w-80 border-black bg-gray-200 rounded-lg p-2"
+          onChange={handleChange}
         />
       </div>
+      <button
+        type="submit"
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        onClick={onSaveNote}
+      >
+        Save
+      </button>
     </div>
   );
 };

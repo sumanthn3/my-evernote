@@ -1,21 +1,21 @@
 import React from "react";
-
+import MyNotes from "../components/MyNotes";
 import { motion } from "framer-motion";
-import Notes from "../components/Notes";
+
 import { variants } from "../utils/constants";
-const CreateNote = () => {
+const MyNotesPage = () => {
   return (
     <motion.div
-      className="w-screen h-screen justify-between bg-white p-4 md:p-8"
+      className="w-screen h-screen bg-white p-4 md:p-8"
       variants={variants}
       initial="hidden"
       animate="enter"
       exit="exit"
       transition={{ type: "linear" }}
     >
-      <Notes />
+      <MyNotes />
     </motion.div>
   );
 };
 
-export default CreateNote;
+export default MyNotesPage;

@@ -10,7 +10,7 @@ import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
 import userlogo from "../Assets/user.png";
 
-import Header from "./Header";
+import SideBar from "./SideBar";
 // import BG from "../Assets/background.jpeg";
 const Login = () => {
   const [isSignInForm, setIsSignInForm] = useState(true);
@@ -82,9 +82,9 @@ const Login = () => {
     setIsSignInForm(!isSignInForm);
   };
   return (
-    <div>
-      <Header />
-      {/* <Sidebar /> */}
+    <div className="flex">
+      {/* <Header /> */}
+      <SideBar />
       {/* <div className="absolute">
         <img className="h-screen object-cover" src={BG} alt="logo" />
       </div> */}

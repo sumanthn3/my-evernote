@@ -1,11 +1,16 @@
 import { useState, useRef, useEffect } from "react";
 import { PiMicrophoneBold } from "react-icons/pi";
+
+import { Navigate, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addNote } from "../utils/notesSlice";
 const mimeType = "audio/webm";
 
 const AudioRecorder = () => {
 	const [permission, setPermission] = useState(false);
 
 	const mediaRecorder = useRef(null);
+	const dispatch=useDispatch();
 
 	const [recordingStatus, setRecordingStatus] = useState("inactive");
 
@@ -14,8 +19,21 @@ const AudioRecorder = () => {
 	const [audio, setAudio] = useState(null);
 
 	const [audioChunks, setAudioChunks] = useState([]);
+	const title=useRef(null);
 	const [duration, setDuration] = useState(0); // Add this state to keep track of duration
-
+	const navigate=useNavigate();
+	const onSaveNote = () => {
+		console.log("Form values", title);
+		dispatch(
+		  addNote({
+			id: Date.now(),
+			type: "audio",
+			title: title.current.value,
+			note: audio,
+		  })
+		);
+		navigate("/Home/mynotes");
+	  };
 	const formatDuration = (seconds) => {
 		const minutes = Math.floor(seconds / 60);
 		const remainingSeconds = seconds % 60;
@@ -88,12 +106,15 @@ const AudioRecorder = () => {
 		getMicrophonePermission();
 	},[]);
 
+ 
+
 	return (
-		<div className="flex flex-col items-center">
-			{/* <h2 className="text-xl">Audio Recorder</h2> */}
-			<main>
-	<div className="mb-5">
+		<div className="w-full flex flex-col items-center">
 		
+			{/* <h2 className="text-xl">Audio Recorder</h2> */}
+			
+	<div className="w-full mb-5">
+	
 		{permission && recordingStatus === "inactive" ? (
 			<div className="flex justify-end">
 
@@ -124,7 +145,9 @@ const AudioRecorder = () => {
 					border-blue-500 
 					rounded-md ">Stop 	</button>
 		</div>
+		
 		<div className="flex items-center justify-center">
+
 			<button
 			  id="speech"
 			  className="relative flex items-center justify-center w-24 h-24 text-white text-4xl rounded-full bg-red z-10"
@@ -139,14 +162,27 @@ const AudioRecorder = () => {
 	</div>
 	{audio ? (
 		<div className="mt-6 flex flex-col items-center">
+			<input
+        ref={title}
+        type="text"
+        placeholder="Enter Title"
+        className="p-4 my-4 w-full bg-white rounded-lg"
+      />
 			<audio className="mb-4" src={audio} controls></audio>
-			<a className="rounded-md border-2 bg-blue-500 hover:bg-blue-600 text-white text-md px-4 py-2 m-4" download href={audio} >
+			{/* <a className="rounded-md border-2 bg-blue-500 hover:bg-blue-600 text-white text-md px-4 py-2 m-4" download href={audio} >
 				Download 
-			</a>
+			</a> */}
+			 <button
+        type="submit"
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        onClick={onSaveNote}
+      >
+        Save
+      </button>
 		</div>
 		
 	) : null}
-</main>
+
 
 		</div>
 	);

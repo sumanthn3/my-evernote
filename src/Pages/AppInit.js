@@ -4,7 +4,8 @@ import { RouterProvider } from "react-router-dom";
 import CreateNote from "./CreateNote";
 import HomePage from "./HomePage";
 import Login from "./Login";
-import MyNotes from "./MyNotes";
+
+import MyNotesPage from "./MyNotesPage";
 const AppInit = () => {
   const appRouter = createBrowserRouter([
     {
@@ -21,11 +22,11 @@ const AppInit = () => {
         },
         {
           path: "mynotes",
-          element: <MyNotes />,
+          element: <MyNotesPage />,
         },
         {
           path: "favourites",
-          element: <MyNotes />,
+          element: <MyNotesPage />,
         },
       ],
     },
